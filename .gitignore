@@ -1,0 +1,6 @@
+/venv/*
+
+/model/
+/input/
+
+/__pycache__/
