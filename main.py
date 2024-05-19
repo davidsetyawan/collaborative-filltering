@@ -17,9 +17,6 @@ df, df_m, df_l = load_data(ratings_file, movies_file, links_file)
 df, user2user_encoded, userencoded2user, movie2movie_encoded, movie_encoded2movie, num_users, num_movies, min_rating, max_rating = process_dataframe(
     df)
 
-print(
-    f"Number of users: {num_users}, Number of Movies: {num_movies}, Min rating: {min_rating}, Max rating: {max_rating}")
-
 df = df.sample(frac=1, random_state=42)
 x = df[["user", "movie"]].values
 y = df["rating"].apply(lambda x: (x - min_rating) /
@@ -37,8 +34,3 @@ model.compile(loss=tf.keras.losses.BinaryCrossentropy(),
 
 path = "model/my_model.keras"
 loaded_model = load_model(path)
-
-user_id = 1  # Example user_id
-recommendations = give_recommendation(df, user2user_encoded, userencoded2user,
-                                      movie2movie_encoded, movie_encoded2movie, loaded_model, user_id, df_m)
-print(recommendations)
