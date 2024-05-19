@@ -1,12 +1,13 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 from keras.models import load_model
-from recommendation import give_recommendation
-from recommender import RecommenderNet
-from processing import process_dataframe
-from data import load_data
+from utils.recommendation import give_recommendation
+from models.recommender import RecommenderNet
+from utils.processing import process_dataframe
+from data.data_loader import load_data
+from utils.tmdb import get_movie_details
 
 app = FastAPI()
 
@@ -32,11 +33,19 @@ def read_root():
 
 
 @app.post("/recommend")
-def recommend(request: RecommendationRequest):
-    user_id = request.user_id
+def recommend(user_id: int = Query(..., description="The ID of the user to get recommendations for")):
     if user_id not in user2user_encoded:
         raise HTTPException(status_code=404, detail="User not found")
 
     recommendations = give_recommendation(df, user2user_encoded, userencoded2user,
                                           movie2movie_encoded, movie_encoded2movie, loaded_model, user_id, df_m, df_l)
     return recommendations
+
+
+@app.get("/movie/{tmdb_id}")
+def movie_details(tmdb_id: int):
+    try:
+        details = get_movie_details(tmdb_id)
+        return details
+    except requests.HTTPError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
