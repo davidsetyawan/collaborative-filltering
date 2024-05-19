@@ -2,3 +2,5 @@ pandas
 numpy
 tensorflow
 keras
+fastapi
+uvicorn
