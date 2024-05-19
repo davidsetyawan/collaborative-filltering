@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
+import requests
 from keras.models import load_model
 from utils.recommendation import give_recommendation
 from models.recommender import RecommenderNet
@@ -48,4 +49,5 @@ def movie_details(tmdb_id: int):
         details = get_movie_details(tmdb_id)
         return details
     except requests.HTTPError as e:
-        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+        raise HTTPException(status_code=e.response.status_code,
+                            detail="Data tidak ditemukan pada TMDB. Error: " + str(e))
