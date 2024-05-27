@@ -4,3 +4,8 @@ tensorflow
 keras
 fastapi
 uvicorn
+sqlalchemy
+fastapi-users[sqlalchemy2]
+python-jose
+bcrypt
+fastapi-users-db-sqlalchemy
