@@ -9,8 +9,19 @@ from models.recommender import RecommenderNet
 from utils.processing import process_dataframe
 from data.data_loader import load_data
 from utils.tmdb import get_movie_details
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ratings_file = "input/ratings.csv"
 movies_file = "input/movies.csv"
