@@ -4,3 +4,5 @@ tensorflow
 keras
 fastapi
 uvicorn
+fastapi_login
+python-multipart
